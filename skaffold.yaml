@@ -1,0 +1,25 @@
+apiVersion: skaffold/v1alpha5
+kind: Config
+build:
+  tagPolicy:
+    gitCommit: {}
+  artifacts:
+    - image: org/realworld-frontend
+      context: .
+      docker:
+        dockerfile: Dockerfile
+        buildArgs:
+          MODE: development
+  local:
+    push: false
+deploy:
+  helm:
+    releases:
+      - name: frontend-team-dev
+        chartPath: ../kubernetes-quick-start/helms/realworld-frontend
+        values:
+          image: org/realworld-frontend
+          # real-frontend:
+          #   image: org/realworld-backend:stable
+        imageStrategy:
+          helm: {}
